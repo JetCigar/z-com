@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Serene Brew | Specialty Coffee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAF8F5;
+      --bg-warm: #F5F1EB;
+      --fg: #2D2926;
+      --fg-light: #4A4642;
+      --muted: #8A8580;
+      --accent: #7A8B6E;
+      --accent-light: #A4B396;
+      --card: #FFFFFF;
+      --border: #E5E0D8;
+      --cream: #F0EBE3;
+      --oak: #C4A574;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      overflow-x: hidden;
+    }
+
+    .font-display {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Organic blob shapes */
+    .organic-shape {
+      position: absolute;
+      border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .organic-shape-1 {
+      width: 600px;
+      height: 600px;
+      background: var(--accent-light);
+      animation: morphFloat 20s ease-in-out infinite;
+    }
+
+    .organic-shape-2 {
+      width: 400px;
+      height: 400px;
+      background: var(--oak);
+      opacity: 0.25;
+      animation: morphFloat 15s ease-in-out infinite reverse;
+    }
+
+    .organic-shape-3 {
+      width: 300px;
+      height: 300px;
+      background: var(--cream);
+      opacity: 0.6;
+      animation: morphFloat 18s ease-in-out infinite 2s;
+    }
+
+    @keyframes morphFloat {
+      0%, 100% {
+        border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%;
+        transform: translate(30px, -20px) rotate(5deg);
+      }
+      50% {
+        border-radius: 50% 50% 40% 60% / 40% 50% 50% 60%;
+        transform: translate(-20px, 30px) rotate(-3deg);
+      }
+      75% {
+        border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%;
+        transform: translate(20px, 20px) rotate(2deg);
+      }
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.4;
+      }
+      90% {
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(-100px) scale(1);
+        opacity: 0;
+      }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger children */
+    .stagger-reveal > * {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stagger-reveal.visible > *:nth-child(1) { transition-delay: 0ms; }
+    .stagger-reveal.visible > *:nth-child(2) { transition-delay: 100ms; }
+    .stagger-reveal.visible > *:nth-child(3) { transition-delay: 200ms; }
+    .stagger-reveal.visible > *:nth-child(4) { transition-delay: 300ms; }
+    .stagger-reveal.visible > *:nth-child(5) { transition-delay: 400ms; }
+    .stagger-reveal.visible > *:nth-child(6) { transition-delay: 500ms; }
+
+    .stagger-reveal.visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Button styles */
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -8px rgba(122, 139, 110, 0.5);
+    }
+
+    .btn-primary:hover::before {
+      opacity: 1;
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--fg);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      border: 1px solid var(--border);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Card hover */
+    .menu-card {
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 20px rgba(45, 41, 38, 0.04);
+    }
+
+    .menu-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(45, 41, 38, 0.1);
+    }
+
+    .menu-card:hover .card-image {
+      transform: scale(1.05);
+    }
+
+    .card-image {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Filter buttons */
+    .filter-btn {
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover {
+      color: var(--fg);
+      background: var(--bg-warm);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* Navigation */
+    .nav-link {
+      position: relative;
+      color: var(--fg-light);
+      transition: color 0.3s;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-link:hover {
+      color: var(--fg);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 41, 38, 0.4);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s;
+      z-index: 100;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      background: var(--card);
+      border-radius: 24px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 101;
+    }
+
+    .modal-overlay.open + .modal-content,
+    .modal-content.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Form inputs */
+    .form-input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(122, 139, 110, 0.1);
+    }
+
+    /* Testimonial slider */
+    .testimonial-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Cart badge */
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      background: var(--oak);
+      color: white;
+      font-size: 11px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(0);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cart-badge.show {
+      transform: scale(1);
+    }
+
+    /* Section divider */
+    .section-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+
+    /* Focus visible */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Loading animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-loaded .hero-element {
+      animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero-loaded .hero-element:nth-child(1) { animation-delay: 0.1s; }
+    .hero-loaded .hero-element:nth-child(2) { animation-delay: 0.2s; }
+    .hero-loaded .hero-element:nth-child(3) { animation-delay: 0.3s; }
+    .hero-loaded .hero-element:nth-child(4) { animation-delay: 0.4s; }
+    .hero-loaded .hero-element:nth-child(5) { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+  <!-- Floating particles container -->
+  <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-5">
+      <div class="flex items-center justify-between">
+        <a href="#" class="font-display text-2xl font-medium tracking-wide text-[var(--fg)]">
+          The Serene Brew
+        </a>
+        
+        <div class="hidden md:flex items-center gap-10">
+          <a href="#menu" class="nav-link text-sm tracking-wide">Menu</a>
+          <a href="#about" class="nav-link text-sm tracking-wide">Our Story</a>
+          <a href="#reserve" class="nav-link text-sm tracking-wide">Reserve</a>
+          <a href="#contact" class="nav-link text-sm tracking-wide">Find Us</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button id="cartBtn" class="relative p-2 hover:bg-[var(--bg-warm)] rounded-full transition-colors" aria-label="Shopping cart">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span id="cartBadge" class="cart-badge">0</span>
+          </button>
+          
+          <button id="mobileMenuBtn" class="md:hidden p-2" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed inset-0 bg-[var(--bg)] z-40 opacity-0 invisible transition-all duration-500 md:hidden">
+    <div class="flex flex-col items-center justify-center h-full gap-8">
+      <a href="#menu" class="font-display text-3xl text-[var(--fg)] mobile-link">Menu</a>
+      <a href="#about" class="font-display text-3xl text-[var(--fg)] mobile-link">Our Story</a>
+      <a href="#reserve" class="font-display text-3xl text-[var(--fg)] mobile-link">Reserve</a>
+      <a href="#contact" class="font-display text-3xl text-[var(--fg)] mobile-link">Find Us</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+    <!-- Organic background shapes -->
+    <div class="organic-shape organic-shape-1" style="top: -10%; right: -10%;"></div>
+    <div class="organic-shape organic-shape-2" style="bottom: 10%; left: -5%;"></div>
+    <div class="organic-shape organic-shape-3" style="top: 40%; right: 20%;"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 py-32 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="stagger-reveal" id="heroContent">
+          <span class="hero-element inline-block text-sm tracking-[0.2em] text-[var(--accent)] font-medium mb-6 opacity-0">SPECIALTY COFFEE</span>
+          <h1 class="hero-element font-display text-5xl md:text-7xl font-light leading-[1.1] mb-8 opacity-0" style="color: var(--fg);">
+            Where time<br>
+            <span class="font-medium">slows down</span>
+          </h1>
+          <p class="hero-element text-lg text-[var(--fg-light)] font-light leading-relaxed max-w-md mb-10 opacity-0">
+            A tranquil escape in the heart of the city. Savor organic, specialty-grade coffee in a space designed for mindful moments.
+          </p>
+          <div class="hero-element flex flex-wrap gap-4 opacity-0">
+            <a href="#menu" class="btn-primary">View Menu</a>
+            <a href="#reserve" class="btn-secondary">Reserve a Table</a>
+          </div>
+        </div>
+        
+        <div class="hero-element relative opacity-0">
+          <div class="aspect-[4/5] rounded-[32px] overflow-hidden bg-[var(--cream)] relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-[var(--accent-light)]/20 to-transparent"></div>
+            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 500" fill="none">
+              <!-- Stylized coffee cup illustration -->
+              <ellipse cx="200" cy="420" rx="120" ry="20" fill="var(--border)" opacity="0.3"/>
+              <path d="M100 200 Q100 380 200 380 Q300 380 300 200" fill="var(--card)" stroke="var(--border)" stroke-width="2"/>
+              <ellipse cx="200" cy="200" rx="100" ry="25" fill="var(--oak)" opacity="0.3"/>
+              <ellipse cx="200" cy="200" rx="100" ry="25" fill="none" stroke="var(--border)" stroke-width="2"/>
+              <path d="M300 220 Q350 220 350 270 Q350 320 300 320" fill="none" stroke="var(--border)" stroke-width="2"/>
+              <!-- Steam -->
+              <path d="M170 160 Q160 130 170 100" fill="none" stroke="var(--accent-light)" stroke-width="2" opacity="0.5">
+                <animate attributeName="d" values="M170 160 Q160 130 170 100;M170 160 Q180 130 170 100;M170 160 Q160 130 170 100" dur="3s" repeatCount="indefinite"/>
+              </path>
+              <path d="M200 150 Q190 110 200 70" fill="none" stroke="var(--accent-light)" stroke-width="2" opacity="0.5">
+                <animate attributeName="d" values="M200 150 Q190 110 200 70;M200 150 Q210 110 200 70;M200 150 Q190 110 200 70" dur="2.5s" repeatCount="indefinite"/>
+              </path>
+              <path d="M230 160 Q220 130 230 100" fill="none" stroke="var(--accent-light)" stroke-width="2" opacity="0.5">
+                <animate attributeName="d" values="M230 160 Q220 130 230 100;M230 160 Q240 130 230 100;M230 160 Q220 130 230 100" dur="3.5s" repeatCount="indefinite"/>
+              </path>
+            </svg>
+            <!-- Decorative leaves -->
+            <svg class="absolute top-8 right-8 w-24 h-24 text-[var(--accent)]" viewBox="0 0 100 100" fill="none">
+              <path d="M50 80 Q30 60 50 20 Q70 60 50 80" fill="currentColor" opacity="0.2"/>
+              <path d="M50 80 L50 20" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+            </svg>
+          </div>
+          
+          <!-- Floating badge -->
+          <div class="absolute -bottom-6 -left-6 bg-[var(--card)] px-6 py-4 rounded-2xl shadow-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-[var(--fg)]">4.9 Rating</div>
+                <div class="text-xs text-[var(--muted)]">500+ reviews</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="py-16 border-y border-[var(--border)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 reveal">
+        <div class="text-center">
+          <div class="font-display text-4xl font-medium text-[var(--fg)]">12K+</div>
+          <div class="text-sm text-[var(--muted)] mt-1">Happy Customers</div>
+        </div>
+        <div class="w-px h-12 bg-[var(--border)] hidden md:block"></div>
+        <div class="text-center">
+          <div class="font-display text-4xl font-medium text-[var(--fg)]">98%</div>
+          <div class="text-sm text-[var(--muted)] mt-1">Organic Ingredients</div>
+        </div>
+        <div class="w-px h-12 bg-[var(--border)] hidden md:block"></div>
+        <div class="text-center">
+          <div class="font-display text-4xl font-medium text-[var(--fg)]">15+</div>
+          <div class="text-sm text-[var(--muted)] mt-1">Bean Origins</div>
+        </div>
+        <div class="w-px h-12 bg-[var(--border)] hidden md:block"></div>
+        <div class="text-center">
+          <div class="font-display text-4xl font-medium text-[var(--fg)]">1%</div>
+          <div class="text-sm text-[var(--muted)] mt-1">For The Planet</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section id="menu" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="text-sm tracking-[0.2em] text-[var(--accent)] font-medium">THE MENU</span>
+        <h2 class="font-display text-4xl md:text-5xl font-light mt-4 mb-6 text-[var(--fg)]">Sensory Gallery</h2>
+        <div class="section-divider mx-auto"></div>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12 reveal">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="coffee">Coffee</button>
+        <button class="filter-btn" data-filter="non-coffee">Non-Coffee</button>
+        <button class="filter-btn" data-filter="bakery">Bakery</button>
+      </div>
+
+      <!-- Roast Level Filters -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12 reveal">
+        <span class="text-sm text-[var(--muted)] mr-4 self-center">Roast Level:</span>
+        <button class="filter-btn text-xs" data-roast="light">Light</button>
+        <button class="filter-btn text-xs" data-roast="medium">Medium</button>
+        <button class="filter-btn text-xs" data-roast="dark">Dark</button>
+      </div>
+
+      <!-- Menu Grid -->
+      <div id="menuGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-reveal">
+        <!-- Items will be rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-24 bg-[var(--bg-warm)] relative overflow-hidden">
+    <div class="organic-shape organic-shape-2" style="top: -20%; right: -10%;"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal">
+          <span class="text-sm tracking-[0.2em] text-[var(--accent)] font-medium">OUR STORY</span>
+          <h2 class="font-display text-4xl md:text-5xl font-light mt-4 mb-8 text-[var(--fg)]">
+            More than coffee,<br>a moment of peace
+          </h2>
+          <div class="space-y-6 text-[var(--fg-light)] font-light leading-relaxed">
+            <p>
+              Born from a simple belief: that the best moments happen when we slow down. The Serene Brew is a sanctuary where organic beans meet intentional design, creating a space that invites you to pause.
+            </p>
+            <p>
+              Every cup tells a story of sustainable farming, ethical sourcing, and the artisans who transform humble beans into liquid gold. Our commitment to the planet goes beyond our cups – we donate 1% of every sale to reforestation projects.
+            </p>
+          </div>
+          
+          <div class="flex gap-8 mt-10">
+            <div>
+              <div class="text-3xl font-display font-medium text-[var(--accent)]">100%</div>
+              <div class="text-sm text-[var(--muted)] mt-1">Organic Beans</div>
+            </div>
+            <div>
+              <div class="text-3xl font-display font-medium text-[var(--accent)]">Zero</div>
+              <div class="text-sm text-[var(--muted)] mt-1">Plastic Waste</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 reveal">
+          <div class="aspect-[3/4] rounded-2xl bg-[var(--accent)]/10 overflow-hidden">
+            <svg class="w-full h-full" viewBox="0 0 200 280" fill="none">
+              <rect width="200" height="280" fill="var(--accent-light)" opacity="0.2"/>
+              <circle cx="100" cy="140" r="60" fill="var(--accent)" opacity="0.1"/>
+              <path d="M80 120 Q100 80 120 120 L115 180 Q100 200 85 180 Z" fill="var(--card)"/>
+            </svg>
+          </div>
+          <div class="aspect-[3/4] rounded-2xl bg-[var(--oak)]/10 overflow-hidden mt-8">
+            <svg class="w-full h-full" viewBox="0 0 200 280" fill="none">
+              <rect width="200" height="280" fill="var(--oak)" opacity="0.1"/>
+              <circle cx="100" cy="180" r="50" fill="var(--oak)" opacity="0.2"/>
+              <ellipse cx="100" cy="180" rx="40" ry="15" fill="var(--oak)" opacity="0.3"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-24 relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="text-sm tracking-[0.2em] text-[var(--accent)] font-medium">TESTIMONIALS</span>
+        <h2 class="font-display text-4xl md:text-5xl font-light mt-4 text-[var(--fg)]">Words from our guests</h2>
+      </div>
+
+      <div class="relative reveal">
+        <div class="overflow-hidden">
+          <div id="testimonialTrack" class="testimonial-track">
+            <!-- Testimonials rendered by JS -->
+          </div>
+        </div>
+        
+        <div class="flex justify-center gap-4 mt-8">
+          <button id="prevTestimonial" class="w-12 h-12 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors" aria-label="Previous testimonial">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M15 18L9 12L15 6"/>
+            </svg>
+          </button>
+          <button id="nextTestimonial" class="w-12 h-12 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors" aria-label="Next testimonial">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 18L15 12L9 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservation Section -->
+  <section id="reserve" class="py-24 bg-[var(--bg-warm)] relative overflow-hidden">
+    <div class="organic-shape organic-shape-3" style="bottom: -10%; left: 10%;"></div>
+    
+    <div class="max-w-3xl mx-auto px-6 relative z-10">
+      <div class="text-center mb-12 reveal">
+        <span class="text-sm tracking-[0.2em] text-[var(--accent)] font-medium">RESERVATIONS</span>
+        <h2 class="font-display text-4xl md:text-5xl font-light mt-4 mb-6 text-[var(--fg)]">Reserve your moment</h2>
+        <p class="text-[var(--fg-light)] font-light">Choose your preferred date, time, and zone</p>
+      </div>
+
+      <form id="reserveForm" class="bg-[var(--card)] rounded-3xl p-8 md:p-12 shadow-lg reveal">
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-sm font-medium mb-2 text-[var(--fg)]">Full Name</label>
+            <input type="text" class="form-input" placeholder="Your name" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2 text-[var(--fg)]">Email</label>
+            <input type="email" class="form-input" placeholder="your@email.com" required>
+          </div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-sm font-medium mb-2 text-[var(--fg)]">Date</label>
+            <input type="date" class="form-input" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2 text-[var(--fg)]">Time</label>
+            <select class="form-input" required>
+              <option value="">Select time</option>
+              <option>08:00 AM</option>
+              <option>09:00 AM</option>
+              <option>10:00 AM</option>
+              <option>11:00 AM</option>
+              <option>12:00 PM</option>
+              <option>02:00 PM</option>
+              <option>03:00 PM</option>
+              <option>04:00 PM</option>
+              <option>05:00 PM</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-sm font-medium mb-2 text-[var(--fg)]">Guests</label>
+            <select class="form-input" required>
+              <option value="">Number of guests</option>
+              <option>1 guest</option>
+              <option>2 guests</option>
+              <option>3 guests</option>
+              <option>4 guests</option>
+              <option>5+ guests</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2 text-[var(--fg)]">Zone</label>
+            <select class="form-input" required>
+              <option value="">Select zone</option>
+              <option>Indoor - Quiet Area</option>
+              <option>Indoor - Social Area</option>
+              <option>Garden Terrace</option>
+            </select>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn-primary w-full mt-4">Confirm Reservation</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16">
+        <div class="reveal">
+          <span class="text-sm tracking-[0.2em] text-[var(--accent)] font-medium">FIND US</span>
+          <h2 class="font-display text-4xl md:text-5xl font-light mt-4 mb-8 text-[var(--fg)]">
+            Your third place<br>awaits
+          </h2>
+          
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-full bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium text-[var(--fg)]">Address</div>
+                <div class="text-[var(--muted)] font-light">123 Serenity Lane, Green District<br>Bangkok, 10110</div>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-full bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12,6 12,12 16,14"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium text-[var(--fg)]">Hours</div>
+                <div class="text-[var(--muted)] font-light">Mon - Fri: 7AM - 8PM<br>Sat - Sun: 8AM - 9PM</div>
+              </div>
+            </div>
+            
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-full bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium text-[var(--fg)]">Contact</div>
+                <div class="text-[var(--muted)] font-light">+66 2 123 4567<br>hello@serenebrew.com</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex gap-4 mt-10">
+            <a href="#" class="w-12 h-12 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+            <a href="#" class="w-12 h-12 rounded-full border border-[var(--border)] flex items-center justify-center hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors" aria-label="LINE">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 5.58 2 10c0 2.03.94 3.89 2.5 5.32V20l3.5-2c1.24.42 2.6.66 4 .66 5.52 0 10-3.58 10-8S17.52 2 12 2zm1 12H8v-1h5v1zm3-3H8v-1h8v1zm0-3H8V7h8v1z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Map placeholder -->
+        <div class="reveal">
+          <div class="aspect-square rounded-3xl bg-[var(--cream)] overflow-hidden relative">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <svg class="w-full h-full" viewBox="0 0 400 400" fill="none">
+                <!-- Simplified map pattern -->
+                <rect width="400" height="400" fill="var(--cream)"/>
+                <path d="M0 200 L400 200" stroke="var(--border)" stroke-width="1"/>
+                <path d="M200 0 L200 400" stroke="var(--border)" stroke-width="1"/>
+                <path d="M0 100 L400 100" stroke="var(--border)" stroke-width="0.5" opacity="0.5"/>
+                <path d="M0 300 L400 300" stroke="var(--border)" stroke-width="0.5" opacity="0.5"/>
+                <path d="M100 0 L100 400" stroke="var(--border)" stroke-width="0.5" opacity="0.5"/>
+                <path d="M300 0 L300 400" stroke="var(--border)" stroke-width="0.5" opacity="0.5"/>
+                <!-- Location marker -->
+                <circle cx="200" cy="200" r="30" fill="var(--accent)" opacity="0.2"/>
+                <circle cx="200" cy="200" r="20" fill="var(--accent)" opacity="0.3"/>
+                <circle cx="200" cy="200" r="10" fill="var(--accent)"/>
+              </svg>
+            </div>
+            <a href="https://maps.google.com" target="_blank" class="absolute bottom-6 left-6 bg-[var(--card)] px-5 py-3 rounded-full text-sm font-medium text-[var(--fg)] shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+              </svg>
+              Get Directions
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 border-t border-[var(--border)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="font-display text-xl text-[var(--fg)]">The Serene Brew</div>
+        <div class="text-sm text-[var(--muted)] font-light">
+          Crafted with intention. Served with care.
+        </div>
+        <div class="text-sm text-[var(--muted)] font-light">
+          2024 All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cartTitle"></div>
+  <div id="cartContent" class="modal-content p-8">
+    <div class="flex justify-between items-center mb-6">
+      <h3 id="cartTitle" class="font-display text-2xl text-[var(--fg)]">Your Cart</h3>
+      <button id="closeCart" class="p-2 hover:bg-[var(--bg-warm)] rounded-full transition-colors" aria-label="Close cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div id="cartItems" class="space-y-4 mb-6">
+      <!-- Cart items rendered by JS -->
+    </div>
+    <div class="border-t border-[var(--border)] pt-6">
+      <div class="flex justify-between mb-4">
+        <span class="text-[var(--muted)]">Subtotal</span>
+        <span id="cartTotal" class="font-medium text-[var(--fg)]">0 THB</span>
+      </div>
+      <button class="btn-primary w-full">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="modal-overlay" role="dialog" aria-modal="true"></div>
+  <div id="confirmContent" class="modal-content p-8 text-center">
+    <div class="w-16 h-16 rounded-full bg-[var(--accent)]/10 flex items-center justify-center mx-auto mb-6">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+        <polyline points="20,6 9,17 4,12"/>
+      </svg>
+    </div>
+    <h3 class="font-display text-2xl text-[var(--fg)] mb-4">Reservation Confirmed</h3>
+    <p class="text-[var(--muted)] mb-6">We've sent the details to your email. See you soon!</p>
+    <button id="closeConfirm" class="btn-secondary">Close</button>
+  </div>
+
+  <script>
+    // Initialize data first
+    const menuItems = [
+      { id: 1, name: 'Ethiopian Yirgacheffe', category: 'coffee', roast: 'light', price: 160, taste: 'Fruity', badge: 'Specialty', description: 'Bright, floral notes with citrus undertones' },
+      { id: 2, name: 'Colombian Supremo', category: 'coffee', roast: 'medium', price: 145, taste: 'Nutty', badge: 'Organic', description: 'Well-balanced with caramel sweetness' },
+      { id: 3, name: 'Sumatra Mandheling', category: 'coffee', roast: 'dark', price: 155, taste: 'Bold', badge: null, description: 'Full-bodied with earthy depth' },
+      { id: 4, name: 'Guatemala Antigua', category: 'coffee', roast: 'medium', price: 150, taste: 'Nutty', badge: 'Specialty', description: 'Spicy complexity with chocolate finish' },
+      { id: 5, name: 'Kenya AA', category: 'coffee', roast: 'light', price: 175, taste: 'Fruity', badge: 'Organic', description: 'Wine-like acidity with berry notes' },
+      { id: 6, name: 'Matcha Latte', category: 'non-coffee', roast: null, price: 135, taste: 'Earthy', badge: 'Organic', description: 'Ceremonial grade with oat milk' },
+      { id: 7, name: 'Golden Turmeric', category: 'non-coffee', roast: null, price: 125, taste: 'Spicy', badge: null, description: 'Anti-inflammatory blend with honey' },
+      { id: 8, name: 'Hibiscus Kombucha', category: 'non-coffee', roast: null, price: 95, taste: 'Fruity', badge: 'Organic', description: 'House-fermented, lightly sparkling' },
+      { id: 9, name: 'Sourdough Toast', category: 'bakery', roast: null, price: 85, taste: 'Savory', badge: null, description: 'House-baked with avocado spread' },
+      { id: 10, name: 'Almond Croissant', category: 'bakery', roast: null, price: 75, taste: 'Nutty', badge: 'Organic', description: 'Buttery layers with almond cream' },
+      { id: 11, name: 'Banana Bread', category: 'bakery', roast: null, price: 65, taste: 'Sweet', badge: null, description: 'Gluten-free option available' },
+      { id: 12, name: 'Brazilian Santos', category: 'coffee', roast: 'dark', price: 140, taste: 'Bold', badge: null, description: 'Low acidity, heavy body' }
+    ];
+
+    const testimonials = [
+      { name: 'Sarah Chen', role: 'Freelancer', text: 'My productivity sanctuary. The ambient noise is perfect, and the pour-over is consistently excellent. I\'ve written my best work here.' },
+      { name: 'Marcus Thompson', role: 'Remote Worker', text: 'Finally, a cafe that understands work-from-home needs. Fast WiFi, comfortable seating, and the garden terrace is a mood booster.' },
+      { name: 'Emma Williams', role: 'Student', text: 'My go-to study spot. The matcha latte keeps me focused without the jitters, and the staff never rushes you out.' }
+    ];
+
+    // State
+    let cart = [];
+    let currentTestimonial = 0;
+    let activeFilter = 'all';
+    let activeRoast = null;
+
+    // DOM Elements
+    const menuGrid = document.getElementById('menuGrid');
+    const testimonialTrack = document.getElementById('testimonialTrack');
+    const cartBadge = document.getElementById('cartBadge');
+    const cartModal = document.getElementById('cartModal');
+    const cartContent = document.getElementById('cartContent');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmContent = document.getElementById('confirmContent');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navbar = document.getElementById('navbar');
+    const particles = document.getElementById('particles');
+
+    // Render menu items
+    function renderMenu() {
+      const filtered = menuItems.filter(item => {
+        const categoryMatch = activeFilter === 'all' || item.category === activeFilter;
+        const roastMatch = !activeRoast || item.roast === activeRoast;
+        return categoryMatch && roastMatch;
+      });
+
+      menuGrid.innerHTML = filtered.map(item => `
+        <article class="menu-card" data-id="${item.id}">
+          <div class="aspect-[4/3] bg-[var(--cream)] relative overflow-hidden">
+            <div class="card-image absolute inset-0 flex items-center justify-center">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                <circle cx="40" cy="40" r="35" fill="${item.category === 'coffee' ? 'var(--oak)' : item.category === 'bakery' ? 'var(--accent-light)' : 'var(--cream)'}" opacity="0.3"/>
+                <circle cx="40" cy="40" r="20" fill="${item.category === 'coffee' ? 'var(--oak)' : item.category === 'bakery' ? 'var(--accent-light)' : 'var(--cream)'}" opacity="0.5"/>
+              </svg>
+            </div>
+            ${item.badge ? `<span class="absolute top-4 left-4 px-3 py-1 bg-[var(--accent)] text-white text-xs rounded-full">${item.badge}</span>` : ''}
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-display text-xl text-[var(--fg)]">${item.name}</h3>
+              <span class="font-medium text-[var(--accent)]">${item.price} THB</span>
+            </div>
+            <p class="text-sm text-[var(--muted)] mb-4">${item.description}</p>
+            <div class="flex justify-between items-center">
+              <div class="flex gap-2">
+                ${item.roast ? `<span class="text-xs px-2 py-1 bg-[var(--bg-warm)] rounded-full text-[var(--muted)]">${item.roast}</span>` : ''}
+                <span class="text-xs px-2 py-1 bg-[var(--bg-warm)] rounded-full text-[var(--muted)]">${item.taste}</span>
+              </div>
+              <button class="add-to-cart w-10 h-10 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--fg)] transition-colors" aria-label="Add ${item.name} to cart">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      // Add click handlers
+      document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const card = e.target.closest('.menu-card');
+          const id = parseInt(card.dataset.id);
+          addToCart(id);
+        });
+      });
+
+      // Trigger reveal
+      setTimeout(() => {
+        menuGrid.classList.add('visible');
+      }, 100);
+    }
+
+    // Render testimonials
+    function renderTestimonials() {
+      testimonialTrack.innerHTML = testimonials.map(t => `
+        <div class="w-full flex-shrink-0 px-8">
+          <blockquote class="text-center max-w-xl mx-auto">
+            <p class="font-display text-2xl md:text-3xl font-light text-[var(--fg)] leading-relaxed mb-6">"${t.text}"</p>
+            <footer>
+              <div class="font-medium text-[var(--fg)]">${t.name}</div>
+              <div class="text-sm text-[var(--muted)]">${t.role}</div>
+            </footer>
+          </blockquote>
+        </div>
+      `).join('');
+    }
+
+    function updateTestimonialPosition() {
+      testimonialTrack.style.transform = `translateX(-${currentTestimonial * 100}%)`;
+    }
+
+    // Cart functions
+    function addToCart(id) {
+      const item = menuItems.find(i => i.id === id);
+      const existing = cart.find(c => c.id === id);
+      
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ ...item, quantity: 1 });
+      }
+      
+      updateCartBadge();
+      
+      // Animate button
+      const btn = document.querySelector(`.menu-card[data-id="${id}"] .add-to-cart`);
+      if (btn) {
+        btn.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+          btn.style.transform = '';
+        }, 200);
+      }
+    }
+
+    function updateCartBadge() {
+      const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartBadge.textContent = total;
+      cartBadge.classList.toggle('show', total > 0);
+    }
+
+    function renderCart() {
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-center text-[var(--muted)] py-8">Your cart is empty</p>';
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="flex items-center gap-4 py-4 border-b border-[var(--border)]">
+            <div class="w-12 h-12 rounded-xl bg-[var(--cream)] flex items-center justify-center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--oak)" opacity="0.5">
+                <circle cx="12" cy="12" r="8"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="font-medium text-[var(--fg)]">${item.name}</div>
+              <div class="text-sm text-[var(--muted)]">${item.quantity}x</div>
+            </div>
+            <div class="font-medium text-[var(--fg)]">${item.price * item.quantity} THB</div>
+            <button class="remove-item p-2 hover:bg-[var(--bg-warm)] rounded-full transition-colors" data-id="${item.id}" aria-label="Remove ${item.name}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('.remove-item').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = parseInt(e.currentTarget.dataset.id);
+            cart = cart.filter(item => item.id !== id);
+            updateCartBadge();
+            renderCart();
+          });
+        });
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      cartTotal.textContent = `${total} THB`;
+    }
+
+    // Particles
+    function createParticles() {
+      const count = window.innerWidth < 768 ? 8 : 15;
+      for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDuration = (15 + Math.random() * 20) + 's';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particle.style.animation = `floatUp ${15 + Math.random() * 20}s linear infinite`;
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particles.appendChild(particle);
+      }
+    }
+
+    // Scroll reveal
+    function initScrollReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.reveal, .stagger-reveal').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // Event listeners
+    function initEventListeners() {
+      // Filter buttons
+      document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.filter;
+          menuGrid.classList.remove('visible');
+          setTimeout(renderMenu, 300);
+        });
+      });
+
+      document.querySelectorAll('.filter-btn[data-roast]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.classList.contains('active')) {
+            btn.classList.remove('active');
+            activeRoast = null;
+          } else {
+            document.querySelectorAll('.filter-btn[data-roast]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeRoast = btn.dataset.roast;
+          }
+          menuGrid.classList.remove('visible');
+          setTimeout(renderMenu, 300);
+        });
+      });
+
+      // Testimonial navigation
+      document.getElementById('prevTestimonial').addEventListener('click', () => {
+        currentTestimonial = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
+        updateTestimonialPosition();
+      });
+
+      document.getElementById('nextTestimonial').addEventListener('click', () => {
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+        updateTestimonialPosition();
+      });
+
+      // Cart modal
+      document.getElementById('cartBtn').addEventListener('click', () => {
+        renderCart();
+        cartModal.classList.add('open');
+        cartContent.classList.add('open');
+      });
+
+      document.getElementById('closeCart').addEventListener('click', closeCart);
+      cartModal.addEventListener('click', closeCart);
+
+      function closeCart() {
+        cartModal.classList.remove('open');
+        cartContent.classList.remove('open');
+      }
+
+      // Confirmation modal
+      document.getElementById('closeConfirm').addEventListener('click', () => {
+        confirmModal.classList.remove('open');
+        confirmContent.classList.remove('open');
+      });
+
+      // Mobile menu
+      document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+        mobileMenu.classList.toggle('opacity-0');
+        mobileMenu.classList.toggle('invisible');
+      });
+
+      document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('opacity-0', 'invisible');
+        });
+      });
+
+      // Reservation form
+      document.getElementById('reserveForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        confirmModal.classList.add('open');
+        confirmContent.classList.add('open');
+        e.target.reset();
+      });
+
+      // Navbar scroll
+      let lastScroll = 0;
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > 100) {
+          navbar.style.background = 'rgba(250, 248, 245, 0.9)';
+          navbar.style.backdropFilter = 'blur(10px)';
+        } else {
+          navbar.style.background = 'transparent';
+          navbar.style.backdropFilter = 'none';
+        }
+        lastScroll = currentScroll;
+      });
+
+      // Hero animation
+      setTimeout(() => {
+        document.getElementById('hero').classList.add('hero-loaded');
+        document.getElementById('heroContent').classList.add('visible');
+      }, 300);
+    }
+
+    // Initialize
+    function init() {
+      renderMenu();
+      renderTestimonials();
+      createParticles();
+      initScrollReveal();
+      initEventListeners();
+    }
+
+    // Run after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
